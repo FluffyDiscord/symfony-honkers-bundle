@@ -26,9 +26,6 @@ class CursorConsumingDataSource implements ChatbotDataSourceInterface
 
     public function getDocuments(SourceQuery $query): DocumentPage
     {
-        $this->cursorCodec->encode('1');
-        $this->htmlToText->convert('<p>x</p>');
-
         return new DocumentPage([]);
     }
 }
