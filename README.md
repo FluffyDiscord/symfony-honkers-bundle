@@ -2,7 +2,8 @@
 
 Exposes the [Honkers SDK](https://github.com/FluffyDiscord/honkers-sdk) chatbot tool-server over
 HTTP: the four endpoints, access-token security, DI wiring. Ships **no domain tools** — bring your
-own, or use `fluffydiscord/sylius-honkers-bundle` for Sylius defaults.
+own, or use [`fluffydiscord/sylius-honkers-bundle`](https://github.com/FluffyDiscord/sylius-honkers-bundle)
+for Sylius defaults.
 
 PHP 8.1+, Symfony 6.4+.
 
