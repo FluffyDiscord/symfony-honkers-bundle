@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace FluffyDiscord\HonkersBundle\Tests\Integration;
 
+use FluffyDiscord\Honkers\Ingest\CatalogIngestClient;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
+use FluffyDiscord\Honkers\Widget\WidgetSnippet;
 use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\AlphaTool;
 use PHPUnit\Framework\TestCase;
 
@@ -39,6 +41,16 @@ class ContainerTest extends TestCase
         $schema = $generator->generate($tool->getArgumentsClass());
 
         self::assertSame('object', $schema['type']);
+    }
+
+    public function testTheOutboundClientAndWidgetBuilderAreWired(): void
+    {
+        $kernel = new HonkersTestKernel('test', true);
+        $kernel->boot();
+        $container = $kernel->getContainer()->get('test.service_container');
+
+        self::assertInstanceOf(CatalogIngestClient::class, $container->get(CatalogIngestClient::class));
+        self::assertInstanceOf(WidgetSnippet::class, $container->get(WidgetSnippet::class));
     }
 
     protected function tearDown(): void

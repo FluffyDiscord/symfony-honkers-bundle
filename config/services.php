@@ -3,15 +3,20 @@
 declare(strict_types=1);
 
 use FluffyDiscord\Honkers\Contract\ChatbotLocaleContextInterface;
+use FluffyDiscord\Honkers\Ingest\CatalogIngestClient;
 use FluffyDiscord\Honkers\Locale\LocaleMatcher;
 use FluffyDiscord\Honkers\Registry\DataSourceRegistry;
 use FluffyDiscord\Honkers\Registry\ToolChoiceLoaderRegistry;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
 use FluffyDiscord\Honkers\Validator\ToolChoiceValidator;
+use FluffyDiscord\Honkers\Widget\WidgetSnippet;
 use FluffyDiscord\HonkersBundle\Locale\DefaultLocaleContext;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpClient\Psr18Client;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return function (ContainerConfigurator $configurator): void {
@@ -42,6 +47,19 @@ return function (ContainerConfigurator $configurator): void {
 
     $services->set(ToolChoiceValidator::class)
         ->tag('validator.constraint_validator');
+
+    $services->set(Psr18Client::class);
+
+    $services->set(CatalogIngestClient::class)
+        ->public()
+        ->arg('$httpClient', service(Psr18Client::class))
+        ->arg('$requestFactory', service(Psr18Client::class))
+        ->arg('$streamFactory', service(Psr18Client::class))
+        ->arg('$backendUrl', param('fluffydiscord_honkers.backend_url'))
+        ->arg('$ingestSecret', param('fluffydiscord_honkers.ingest_secret'));
+
+    $services->set(WidgetSnippet::class)
+        ->public();
 
     $services->alias(ChatbotLocaleContextInterface::class, DefaultLocaleContext::class);
 };

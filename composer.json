@@ -14,10 +14,12 @@
     "require": {
         "php": "^8.1",
         "fluffydiscord/honkers-sdk": "dev-master",
+        "nyholm/psr7": "^1.8",
         "symfony/config": "^6.4 || ^7.0 || ^8.0",
         "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
         "symfony/event-dispatcher": "^6.4 || ^7.0 || ^8.0",
         "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-client": "^6.4 || ^7.0 || ^8.0",
         "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
         "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
         "symfony/routing": "^6.4 || ^7.0 || ^8.0",

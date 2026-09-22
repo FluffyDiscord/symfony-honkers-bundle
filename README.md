@@ -1,6 +1,6 @@
-# Symfony Honkers Bundle
+# Symfony honkers.dev Bundle
 
-Exposes the [Honkers SDK](https://github.com/FluffyDiscord/honkers-sdk) chatbot tool-server over
+Exposes the [honkers.dev SDK](https://github.com/FluffyDiscord/honkers-sdk) chatbot tool-server over
 HTTP: the four endpoints, access-token security, DI wiring. Ships **no domain tools** — bring your
 own, or use [`fluffydiscord/sylius-honkers-bundle`](https://github.com/FluffyDiscord/sylius-honkers-bundle)
 for Sylius defaults.
@@ -30,8 +30,16 @@ FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle::class => ['all' => true]
 ```yaml
 // config/packages/fluffy_discord_honkers.yaml
 fluffy_discord_honkers:
-    api_secret: '%env(CHATBOT_API_SECRET)%'
+    api_secret: '%env(CHATBOT_API_SECRET)%'       # inbound: Bearer the backend sends you
+    backend_url: '%env(CHATBOT_BACKEND_URL)%'     # outbound: honkers.dev origin (optional)
+    ingest_secret: '%env(CHATBOT_INGEST_SECRET)%' # outbound: catalog-push secret (optional)
+    widget:
+        enabled: true
+        site_key: '%env(CHATBOT_SITE_KEY)%'
+        cdn_url: '%env(CHATBOT_WIDGET_CDN_URL)%'   # optional; empty → {backend_url}/widget/v1/chat.js
 ```
+
+Only `api_secret` is required. The rest power the outbound + widget services below.
 
 Routes are not auto-loaded — import them:
 
@@ -54,6 +62,27 @@ Implement `FluffyDiscord\Honkers\Contract\ChatbotToolInterface` (or `ChatbotData
 
 A non-Sylius app gets a request-locale-only `ChatbotLocaleContextInterface`. Override that service
 to add channel-aware locales.
+
+## Push catalog changes
+
+Inject `FluffyDiscord\Honkers\Ingest\CatalogIngestClient` — it's wired to Symfony's HTTP client and
+your `backend_url`/`ingest_secret`. Tell honkers.dev which entries changed so it re-indexes them:
+
+```php
+use FluffyDiscord\Honkers\DTO\CatalogChange;
+use FluffyDiscord\Honkers\Enum\CatalogSourceName;
+
+$result = $catalogIngestClient->send($siteKey, new CatalogChange(
+    CatalogSourceName::Products,
+    'cs_CZ',
+    ['CLIPPER-01', 'CLIPPER-02'],   // max 500 per call
+));
+```
+
+## Widget
+
+Inject `FluffyDiscord\Honkers\Widget\WidgetSnippet` to render the chat embed markup from your
+`widget.*` config. (`fluffydiscord/sylius-honkers-bundle` injects it into the shop layout for you.)
 
 ## Tests
 
