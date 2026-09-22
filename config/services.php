@@ -12,7 +12,7 @@ use FluffyDiscord\Honkers\Validator\ToolChoiceValidator;
 use FluffyDiscord\HonkersBundle\Locale\DefaultLocaleContext;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_locator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return function (ContainerConfigurator $configurator): void {
     $services = $configurator->services();
@@ -32,13 +32,13 @@ return function (ContainerConfigurator $configurator): void {
     $services->set(ArgumentsSchemaGenerator::class);
 
     $services->set(ToolChoiceLoaderRegistry::class)
-        ->arg('$loaders', tagged_locator('fluffydiscord_chatbot.tool_choice_loader'));
+        ->arg('$loaders', tagged_iterator('fluffydiscord_chatbot.tool_choice_loader'));
 
     $services->set(ToolRegistry::class)
-        ->arg('$tools', tagged_locator('fluffydiscord_chatbot.tool', 'definition_name'));
+        ->arg('$tools', tagged_iterator('fluffydiscord_chatbot.tool'));
 
     $services->set(DataSourceRegistry::class)
-        ->arg('$sources', tagged_locator('fluffydiscord_chatbot.source', 'definition_name'));
+        ->arg('$sources', tagged_iterator('fluffydiscord_chatbot.source'));
 
     $services->set(ToolChoiceValidator::class)
         ->tag('validator.constraint_validator');

@@ -14,15 +14,14 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class ChatbotDefinitionNamePassTest extends TestCase
 {
-    public function testIndexesTagsByDefinitionName(): void
+    public function testAcceptsValidUniqueNames(): void
     {
         $container = new ContainerBuilder();
         $container->register(AlphaTool::class, AlphaTool::class)->addTag('fluffydiscord_chatbot.tool');
 
         (new ChatbotDefinitionNamePass())->process($container);
 
-        $tags = $container->getDefinition(AlphaTool::class)->getTag('fluffydiscord_chatbot.tool');
-        self::assertSame([['definition_name' => 'alpha_tool']], $tags);
+        $this->expectNotToPerformAssertions();
     }
 
     public function testDuplicateNamesFailCompilation(): void

@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 namespace FluffyDiscord\HonkersBundle\DependencyInjection\Compiler;
 
-use FluffyDiscord\Honkers\Registry\DataSourceRegistry;
-use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 
+/**
+ * Validates chatbot tool/source definition names at compile time: the registries key services by
+ * `getDefinition()->name`, so a duplicate would silently shadow another and a malformed name would
+ * only surface at runtime. Fail the build instead.
+ */
 class ChatbotDefinitionNamePass implements CompilerPassInterface
 {
     private const NAME_PATTERN = '/^[a-z0-9_]{1,64}$/';
 
     public function process(ContainerBuilder $container): void
     {
-        $toolNames = $this->indexTaggedServices($container, 'fluffydiscord_chatbot.tool');
-        $this->injectDefinitionNames($container, ToolRegistry::class, $toolNames);
-
-        $sourceNames = $this->indexTaggedServices($container, 'fluffydiscord_chatbot.source');
-        $this->injectDefinitionNames($container, DataSourceRegistry::class, $sourceNames);
+        $this->validateTaggedServices($container, 'fluffydiscord_chatbot.tool');
+        $this->validateTaggedServices($container, 'fluffydiscord_chatbot.source');
     }
 
-    /**
-     * @return list<string>
-     */
-    private function indexTaggedServices(ContainerBuilder $container, string $tag): array
+    private function validateTaggedServices(ContainerBuilder $container, string $tag): void
     {
         $serviceIdsByName = [];
         foreach (array_keys($container->findTaggedServiceIds($tag)) as $serviceId) {
@@ -44,25 +41,7 @@ class ChatbotDefinitionNamePass implements CompilerPassInterface
                 ));
             }
             $serviceIdsByName[$name] = $serviceId;
-
-            $definition->clearTag($tag);
-            $definition->addTag($tag, ['definition_name' => $name]);
         }
-
-        return array_keys($serviceIdsByName);
-    }
-
-    /**
-     * @param list<string> $names
-     */
-    private function injectDefinitionNames(ContainerBuilder $container, string $registryId, array $names): void
-    {
-        $hasRegistry = $container->hasDefinition($registryId);
-        if (!$hasRegistry) {
-            return;
-        }
-
-        $container->getDefinition($registryId)->setArgument('$names', $names);
     }
 
     private function resolveDefinitionName(string $class, string $tag): string
