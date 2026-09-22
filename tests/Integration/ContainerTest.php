@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace FluffyDiscord\HonkersBundle\Tests\Integration;
 
 use FluffyDiscord\Honkers\Ingest\CatalogIngestClient;
+use FluffyDiscord\Honkers\Registry\DataSourceRegistry;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
 use FluffyDiscord\Honkers\Widget\WidgetSnippet;
 use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\AlphaTool;
+use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\CursorConsumingDataSource;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -51,6 +53,17 @@ class ContainerTest extends TestCase
 
         self::assertInstanceOf(CatalogIngestClient::class, $container->get(CatalogIngestClient::class));
         self::assertInstanceOf(WidgetSnippet::class, $container->get(WidgetSnippet::class));
+    }
+
+    public function testADataSourceCanAutowireTheSdkCursorAndTextUtilities(): void
+    {
+        $kernel = new HonkersTestKernel('test', true);
+        $kernel->boot();
+        $container = $kernel->getContainer()->get('test.service_container');
+
+        $dataSource = $container->get(DataSourceRegistry::class)->get('cursor_consuming');
+
+        self::assertInstanceOf(CursorConsumingDataSource::class, $dataSource);
     }
 
     protected function tearDown(): void

@@ -6,6 +6,7 @@ namespace FluffyDiscord\HonkersBundle\Tests\Integration;
 
 use FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle;
 use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\AlphaTool;
+use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\CursorConsumingDataSource;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -41,8 +42,15 @@ class HonkersTestKernel extends Kernel
             'api_secret' => 'top-secret',
         ]);
 
-        $container->services()
+        $services = $container->services();
+
+        $services
             ->set(AlphaTool::class)
+            ->autoconfigure()
+            ->autowire();
+
+        $services
+            ->set(CursorConsumingDataSource::class)
             ->autoconfigure()
             ->autowire();
     }
