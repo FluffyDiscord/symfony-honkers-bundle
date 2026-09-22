@@ -28,12 +28,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CallToolController extends AbstractController
 {
     public function __construct(
-        private readonly ToolRegistry $toolRegistry,
-        private readonly DenormalizerInterface $denormalizer,
-        private readonly ValidatorInterface $validator,
-        private readonly TranslatorInterface $translator,
-        private readonly LoggerInterface $logger,
+        private readonly ToolRegistry                  $toolRegistry,
+        private readonly DenormalizerInterface         $denormalizer,
+        private readonly ValidatorInterface            $validator,
+        private readonly TranslatorInterface           $translator,
         private readonly ChatbotLocaleContextInterface $localeContext,
+        private readonly ?LoggerInterface              $logger = null,
     ) {
     }
 
@@ -60,7 +60,7 @@ class CallToolController extends AbstractController
         try {
             $result = $tool->execute($arguments, $context);
         } catch (\Throwable $exception) {
-            $this->logger->error('Chatbot tool execution failed.', [
+            $this->logger?->error('Chatbot tool execution failed.', [
                 'tool' => $name,
                 'exception' => $exception,
             ]);
