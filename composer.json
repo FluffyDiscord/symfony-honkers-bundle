@@ -1,0 +1,47 @@
+{
+    "name": "fluffydiscord/symfony-honkers-bundle",
+    "description": "Vanilla Symfony bundle exposing the Honkers chatbot tool-server endpoints, security and wiring",
+    "type": "symfony-bundle",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/FluffyDiscord/honkers-sdk.git"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "fluffydiscord/honkers-sdk": "dev-master",
+        "psr/log": "^1.0 || ^2.0 || ^3.0",
+        "symfony/config": "^6.4 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/event-dispatcher": "^6.4 || ^7.0 || ^8.0",
+        "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
+        "symfony/routing": "^6.4 || ^7.0 || ^8.0",
+        "symfony/security-core": "^6.4 || ^7.0 || ^8.0",
+        "symfony/security-http": "^6.4 || ^7.0 || ^8.0",
+        "symfony/serializer": "^6.4 || ^7.0 || ^8.0",
+        "symfony/translation": "^6.4 || ^7.0 || ^8.0",
+        "symfony/validator": "^6.4 || ^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0 || ^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FluffyDiscord\\HonkersBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FluffyDiscord\\HonkersBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
