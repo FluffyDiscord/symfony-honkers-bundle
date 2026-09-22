@@ -82,7 +82,8 @@ $result = $catalogIngestClient->send($siteKey, new CatalogChange(
 ## Widget
 
 Inject `FluffyDiscord\Honkers\Widget\WidgetSnippet` to render the chat embed markup from your
-`widget.*` config. (`fluffydiscord/sylius-honkers-bundle` injects it into the shop layout for you.)
+`widget.*` config. (`fluffydiscord/sylius-honkers-bundle` auto-injects the widget into the shop
+layout for you.)
 
 ## Tests
 

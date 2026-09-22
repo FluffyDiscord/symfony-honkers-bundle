@@ -13,7 +13,9 @@ use FluffyDiscord\Honkers\Validator\ToolChoiceValidator;
 use FluffyDiscord\Honkers\Widget\WidgetSnippet;
 use FluffyDiscord\HonkersBundle\Locale\DefaultLocaleContext;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -48,7 +50,12 @@ return function (ContainerConfigurator $configurator): void {
     $services->set(ToolChoiceValidator::class)
         ->tag('validator.constraint_validator');
 
-    $services->set(Psr18Client::class);
+    $services->set('fluffydiscord_honkers.ingest_http_client', HttpClientInterface::class)
+        ->factory([HttpClient::class, 'create'])
+        ->args([['timeout' => 2.0, 'max_duration' => 5.0]]);
+
+    $services->set(Psr18Client::class)
+        ->arg('$client', service('fluffydiscord_honkers.ingest_http_client'));
 
     $services->set(CatalogIngestClient::class)
         ->public()
