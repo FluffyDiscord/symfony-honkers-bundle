@@ -3,14 +3,6 @@
     "description": "Vanilla Symfony bundle exposing the Honkers chatbot tool-server endpoints, security and wiring",
     "type": "symfony-bundle",
     "license": "proprietary",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/FluffyDiscord/honkers-sdk.git"
-        }
-    ],
     "require": {
         "php": "^8.1",
         "fluffydiscord/honkers-sdk": "^1.0",
