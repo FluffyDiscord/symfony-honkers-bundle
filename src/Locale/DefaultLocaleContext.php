@@ -35,6 +35,14 @@ class DefaultLocaleContext implements ChatbotLocaleContextInterface
         return [$this->defaultLocale];
     }
 
+    /**
+     * @return list<string>
+     */
+    public function getAllChannelLocales(): array
+    {
+        return [$this->defaultLocale];
+    }
+
     public function resolveForChannel(string $requestedLocale): ?string
     {
         return $this->localeMatcher->resolveServedLocale($requestedLocale, [$this->defaultLocale]);

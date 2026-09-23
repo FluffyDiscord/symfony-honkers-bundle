@@ -22,7 +22,7 @@ class ListSourcesController extends AbstractController
     public function __invoke(): JsonResponse
     {
         $locale = $this->localeContext->getCurrentLocale();
-        $channelLocales = $this->localeContext->getChannelLocales();
+        $channelLocales = $this->localeContext->getAllChannelLocales();
 
         $sources = [];
         foreach ($this->dataSourceRegistry->all() as $source) {
