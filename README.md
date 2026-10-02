@@ -43,7 +43,7 @@ fluffy_discord_honkers:
     widget:
         enabled: true
         site_key: '%env(CHATBOT_SITE_KEY)%'
-        cdn_url: '%env(CHATBOT_WIDGET_CDN_URL)%'   # optional; empty → {backend_url}/widget/v1/chat.js
+        cdn_url: '%env(CHATBOT_WIDGET_CDN_URL)%'   # optional; empty → https://honkers.b-cdn.net/widget/v1/chat.js
 ```
 
 Routes are not auto-loaded — import them:
