@@ -8,7 +8,12 @@ use FluffyDiscord\Honkers\Ingest\CatalogIngestClient;
 use FluffyDiscord\Honkers\Registry\DataSourceRegistry;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
+use FluffyDiscord\Honkers\Telemetry\TelemetryClient;
 use FluffyDiscord\Honkers\Widget\WidgetSnippet;
+use FluffyDiscord\HonkersBundle\Contract\SiteKeyContextInterface;
+use FluffyDiscord\HonkersBundle\EventListener\LinkVisitBeacon;
+use FluffyDiscord\HonkersBundle\Reporting\BackendReportGuard;
+use FluffyDiscord\HonkersBundle\Site\ConfiguredSiteKeyContext;
 use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\AlphaTool;
 use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\CursorConsumingDataSource;
 use PHPUnit\Framework\TestCase;
@@ -52,7 +57,20 @@ class ContainerTest extends TestCase
         $container = $kernel->getContainer()->get('test.service_container');
 
         self::assertInstanceOf(CatalogIngestClient::class, $container->get(CatalogIngestClient::class));
+        self::assertInstanceOf(TelemetryClient::class, $container->get(TelemetryClient::class));
         self::assertInstanceOf(WidgetSnippet::class, $container->get(WidgetSnippet::class));
+        self::assertInstanceOf(ConfiguredSiteKeyContext::class, $container->get(SiteKeyContextInterface::class));
+        self::assertInstanceOf(LinkVisitBeacon::class, $container->get(LinkVisitBeacon::class));
+    }
+
+    public function testTheBackendReportGuardIsPublic(): void
+    {
+        $kernel = new HonkersTestKernel('test', true);
+        $kernel->boot();
+
+        $backendReportGuard = $kernel->getContainer()->get(BackendReportGuard::class);
+
+        self::assertInstanceOf(BackendReportGuard::class, $backendReportGuard);
     }
 
     public function testADataSourceCanAutowireTheSdkCursorAndTextUtilities(): void

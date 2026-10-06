@@ -242,6 +242,40 @@ config:
 The widget talks only to `backend_url`; it never calls `/chatbot/v1` itself.
 (`fluffydiscord/sylius-honkers-bundle` auto-injects it into the shop layout for you.)
 
+## Chat click tracking
+
+**Visits from chat links are reported for you.** Links the chat sends carry `?gooseclid=…`; when such a
+page loads with a 2xx, the bundle tells honkers.dev after the response is sent — even if the widget is
+blocked. No setup beyond `backend_url`, `ingest_secret` and `widget.site_key`.
+
+- Reported: main GET request, no prefetch, page address without query or fragment.
+- Backend unreachable → logged warning; your page is never affected.
+- Any of the three settings empty → nothing sent, nothing logged.
+- Non-https `backend_url` → skipped with a logged warning outside the `dev` env.
+
+**One site key per app comes from `widget.site_key`.** Serving several sites? Alias your own resolver:
+
+```php
+// config/services.php
+$services->alias(FluffyDiscord\HonkersBundle\Contract\SiteKeyContextInterface::class, App\Chatbot\MySiteKeyContext::class);
+```
+
+**Report orders yourself.** Remember the `gooseclid` (e.g. in the session) and, when the order is
+placed, call `FluffyDiscord\Honkers\Telemetry\TelemetryClient`:
+
+```php
+use FluffyDiscord\Honkers\DTO\ChatOrder;
+
+$telemetryClient->reportOrder($siteKey, new ChatOrder(
+    $clickId,
+    'ORDER-1042',
+    129900,   // revenue in ISO 4217 minor units: 1299.00 CZK
+    'CZK',
+));
+```
+
+It throws `TelemetryException` on failure — catch and log it.
+
 ## Tests
 
 ```bash

@@ -10,10 +10,15 @@ use FluffyDiscord\Honkers\Registry\DataSourceRegistry;
 use FluffyDiscord\Honkers\Registry\ToolChoiceLoaderRegistry;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
+use FluffyDiscord\Honkers\Telemetry\ClickId;
+use FluffyDiscord\Honkers\Telemetry\TelemetryClient;
 use FluffyDiscord\Honkers\Text\HtmlToText;
 use FluffyDiscord\Honkers\Validator\ToolChoiceValidator;
 use FluffyDiscord\Honkers\Widget\WidgetSnippet;
+use FluffyDiscord\HonkersBundle\Contract\SiteKeyContextInterface;
 use FluffyDiscord\HonkersBundle\Locale\DefaultLocaleContext;
+use FluffyDiscord\HonkersBundle\Reporting\BackendReportGuard;
+use FluffyDiscord\HonkersBundle\Site\ConfiguredSiteKeyContext;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -69,8 +74,22 @@ return function (ContainerConfigurator $configurator): void {
         ->arg('$backendUrl', param('fluffydiscord_honkers.backend_url'))
         ->arg('$ingestSecret', param('fluffydiscord_honkers.ingest_secret'));
 
+    $services->set(TelemetryClient::class)
+        ->public()
+        ->arg('$httpClient', service(Psr18Client::class))
+        ->arg('$requestFactory', service(Psr18Client::class))
+        ->arg('$streamFactory', service(Psr18Client::class))
+        ->arg('$backendUrl', param('fluffydiscord_honkers.backend_url'))
+        ->arg('$ingestSecret', param('fluffydiscord_honkers.ingest_secret'));
+
+    $services->set(ClickId::class);
+
+    $services->set(BackendReportGuard::class)
+        ->public();
+
     $services->set(WidgetSnippet::class)
         ->public();
 
     $services->alias(ChatbotLocaleContextInterface::class, DefaultLocaleContext::class);
+    $services->alias(SiteKeyContextInterface::class, ConfiguredSiteKeyContext::class);
 };
