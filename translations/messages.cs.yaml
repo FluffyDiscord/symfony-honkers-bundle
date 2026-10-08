@@ -12,3 +12,19 @@ fluffydiscord_honkers:
         internal_error: 'Došlo k neočekávané chybě.'
     tool:
         failure: 'Požadované informace se nyní nepodařilo získat. Zkuste to prosím později.'
+    pairing:
+        title: 'Připojení chatbota'
+        environment_credentials: 'Tento obchod má přístupové údaje chatbota v proměnných prostředí. Vložte je do konfigurace obchodu ručně.'
+        error:
+            invalid_code: 'Odkaz pro připojení je poškozený. Vraťte se do administrace chatbota a klikněte znovu na Připojit.'
+            backend_url_refused: 'Adresa backendu chatbota v obchodě chybí nebo nepoužívá https. Opravte backend_url v konfiguraci obchodu.'
+            pairing_hostname_missing: 'Obchod nemá pro tuto doménu nastavený hostname. Nastavte hostname kanálu a klikněte znovu na Připojit.'
+            pairing_wrong_shop: 'Toto připojení patří jinému obchodu. Nic se neuložilo. Klikněte na Připojit u správného webu.'
+            pairing_unsupported: 'Tento obchod neumí přístupové údaje uložit. Vložte je do konfigurace obchodu ručně.'
+            pairing_not_found: 'Odkaz pro připojení vypršel nebo už byl použit. Klikněte znovu na Připojit v administraci chatbota.'
+            rate_limited: 'Příliš mnoho pokusů. Počkejte pár minut a klikněte znovu na Připojit.'
+            validation_failed: 'Backend chatbota požadavek na připojení odmítl. Klikněte znovu na Připojit.'
+            invalid_request: 'Backend chatbota požadavek na připojení odmítl. Klikněte znovu na Připojit.'
+            transport_failed: 'Backend chatbota není dostupný. Zkuste to za chvíli znovu.'
+            invalid_response: 'Backend chatbota vrátil neočekávanou odpověď. Zkuste to za chvíli znovu.'
+            unknown: 'Připojení se nepodařilo. Klikněte znovu na Připojit v administraci chatbota.'

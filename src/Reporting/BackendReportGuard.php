@@ -15,9 +15,6 @@ class BackendReportGuard
         #[Autowire(param: 'fluffydiscord_honkers.backend_url')]
         private readonly string $backendUrl,
 
-        #[Autowire(param: 'fluffydiscord_honkers.ingest_secret')]
-        private readonly string $ingestSecret,
-
         #[Autowire(param: 'kernel.environment')]
         private readonly string $environment,
     ) {
@@ -32,29 +29,13 @@ class BackendReportGuard
         if ($this->backendUrl === '') {
             $missingKeys[] = 'backend_url';
         }
-        if ($this->ingestSecret === '') {
-            $missingKeys[] = 'ingest_secret';
-        }
 
         return $missingKeys;
     }
 
-    /**
-     * @return list<string>
-     */
-    public function getMissingConfigurationKeys(string $siteKey): array
+    public function canReport(string $feature): bool
     {
         $missingKeys = $this->getMissingBackendConfigurationKeys();
-        if ($siteKey === '') {
-            $missingKeys[] = 'widget.site_key';
-        }
-
-        return $missingKeys;
-    }
-
-    public function canReport(string $siteKey, string $feature): bool
-    {
-        $missingKeys = $this->getMissingConfigurationKeys($siteKey);
         if ($missingKeys !== []) {
             return false;
         }

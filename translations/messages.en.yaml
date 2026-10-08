@@ -12,3 +12,19 @@ fluffydiscord_honkers:
         internal_error: 'An unexpected error occurred.'
     tool:
         failure: 'The requested information could not be retrieved right now. Please try again later.'
+    pairing:
+        title: 'Connecting the chatbot'
+        environment_credentials: "This shop keeps its chatbot credentials in environment variables. Paste them into the shop's configuration manually."
+        error:
+            invalid_code: 'The connection link is broken. Go back to the chatbot dashboard and click Connect again.'
+            backend_url_refused: "The shop's chatbot backend URL is missing or isn't https. Fix backend_url in the shop's configuration."
+            pairing_hostname_missing: "This shop has no hostname set for this domain. Set the channel's hostname and click Connect again."
+            pairing_wrong_shop: 'This connection belongs to another shop. Nothing was saved. Click Connect again from the right website.'
+            pairing_unsupported: "This shop can't store the credentials. Paste them into the shop's configuration manually."
+            pairing_not_found: 'The connection link has expired or was already used. Click Connect again in the chatbot dashboard.'
+            rate_limited: 'Too many attempts. Wait a few minutes and click Connect again.'
+            validation_failed: 'The chatbot backend refused the connection request. Click Connect again.'
+            invalid_request: 'The chatbot backend refused the connection request. Click Connect again.'
+            transport_failed: "The chatbot backend can't be reached. Try again in a moment."
+            invalid_response: 'The chatbot backend sent an unexpected answer. Try again in a moment.'
+            unknown: 'Connecting failed. Click Connect again in the chatbot dashboard.'

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FluffyDiscord\HonkersBundle\EventListener;
 
+use FluffyDiscord\Honkers\DTO\SiteCredentials;
 use FluffyDiscord\Honkers\Telemetry\ClickId;
 use FluffyDiscord\Honkers\Telemetry\TelemetryClient;
-use FluffyDiscord\HonkersBundle\Contract\SiteKeyContextInterface;
+use FluffyDiscord\HonkersBundle\Contract\CredentialsProviderInterface;
 use FluffyDiscord\HonkersBundle\Reporting\BackendReportGuard;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -22,14 +23,14 @@ class LinkVisitBeacon implements ResetInterface
 
     private string $pageUrl = '';
 
-    private string $siteKey = '';
+    private ?SiteCredentials $site = null;
 
     public function __construct(
-        private readonly TelemetryClient         $telemetryClient,
-        private readonly SiteKeyContextInterface $siteKeyContext,
-        private readonly ClickId                 $clickId,
-        private readonly BackendReportGuard      $backendReportGuard,
-        private readonly LoggerInterface         $logger,
+        private readonly TelemetryClient              $telemetryClient,
+        private readonly CredentialsProviderInterface $credentialsProvider,
+        private readonly ClickId                      $clickId,
+        private readonly BackendReportGuard           $backendReportGuard,
+        private readonly LoggerInterface              $logger,
     ) {
     }
 
@@ -53,8 +54,17 @@ class LinkVisitBeacon implements ResetInterface
             return;
         }
 
-        $siteKey = $this->resolveSiteKey();
-        $canReport = $this->backendReportGuard->canReport($siteKey, 'chat link visit');
+        $site = $this->findCurrentSite();
+        if ($site === null) {
+            return;
+        }
+
+        $hasIngestSecret = $site->hasIngestSecret();
+        if (!$hasIngestSecret) {
+            return;
+        }
+
+        $canReport = $this->backendReportGuard->canReport('chat link visit');
         if (!$canReport) {
             return;
         }
@@ -62,7 +72,7 @@ class LinkVisitBeacon implements ResetInterface
         $path = $request->getPathInfo();
         $this->visitClickId = $clickId;
         $this->pageUrl = $request->getUriForPath($path);
-        $this->siteKey = $siteKey;
+        $this->site = $site;
     }
 
     #[AsEventListener(event: KernelEvents::TERMINATE)]
@@ -70,10 +80,10 @@ class LinkVisitBeacon implements ResetInterface
     {
         $clickId = $this->visitClickId;
         $pageUrl = $this->pageUrl;
-        $siteKey = $this->siteKey;
+        $site = $this->site;
         $this->reset();
 
-        if ($clickId === '') {
+        if ($site === null) {
             return;
         }
 
@@ -84,7 +94,7 @@ class LinkVisitBeacon implements ResetInterface
         }
 
         try {
-            $this->telemetryClient->reportLinkVisit($siteKey, $clickId, $pageUrl);
+            $this->telemetryClient->reportLinkVisit($site, $clickId, $pageUrl);
         } catch (\Throwable $exception) {
             $this->logger->warning('Chatbot: reporting the chat link visit failed.', [
                 'pageUrl' => $pageUrl,
@@ -97,7 +107,7 @@ class LinkVisitBeacon implements ResetInterface
     {
         $this->visitClickId = '';
         $this->pageUrl = '';
-        $this->siteKey = '';
+        $this->site = null;
     }
 
     /**
@@ -134,14 +144,14 @@ class LinkVisitBeacon implements ResetInterface
         return false;
     }
 
-    private function resolveSiteKey(): string
+    private function findCurrentSite(): ?SiteCredentials
     {
         try {
-            return $this->siteKeyContext->getSiteKey();
+            return $this->credentialsProvider->findCurrentSite();
         } catch (\Throwable $exception) {
-            $this->logger->warning('Chatbot: resolving the site key for the chat link visit failed.', ['exception' => $exception]);
+            $this->logger->warning('Chatbot: resolving the site for the chat link visit failed.', ['exception' => $exception]);
 
-            return '';
+            return null;
         }
     }
 }

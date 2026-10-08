@@ -25,15 +25,13 @@ class FluffyDiscordHonkersBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-                ->scalarNode('api_secret')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('backend_url')->defaultValue('')->end()
-                ->scalarNode('ingest_secret')->defaultValue('')->end()
                 ->arrayNode('widget')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
-                        ->scalarNode('site_key')->defaultValue('')->end()
                         ->scalarNode('cdn_url')->defaultValue('')->end()
+                        ->booleanNode('defer')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end();
@@ -49,12 +47,10 @@ class FluffyDiscordHonkersBundle extends AbstractBundle
             ->addTag('fluffydiscord_chatbot.tool_choice_loader');
 
         $configurator->parameters()
-            ->set('fluffydiscord_honkers.api_secret', $config['api_secret'])
             ->set('fluffydiscord_honkers.backend_url', $config['backend_url'])
-            ->set('fluffydiscord_honkers.ingest_secret', $config['ingest_secret'])
             ->set('fluffydiscord_honkers.widget.enabled', $config['widget']['enabled'])
-            ->set('fluffydiscord_honkers.widget.site_key', $config['widget']['site_key'])
-            ->set('fluffydiscord_honkers.widget.cdn_url', $config['widget']['cdn_url']);
+            ->set('fluffydiscord_honkers.widget.cdn_url', $config['widget']['cdn_url'])
+            ->set('fluffydiscord_honkers.widget.defer', $config['widget']['defer']);
 
         $configurator->import(__DIR__ . '/../config/services.php');
     }

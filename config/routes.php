@@ -5,6 +5,7 @@ declare(strict_types=1);
 use FluffyDiscord\HonkersBundle\Controller\CallToolController;
 use FluffyDiscord\HonkersBundle\Controller\ListSourcesController;
 use FluffyDiscord\HonkersBundle\Controller\ListToolsController;
+use FluffyDiscord\HonkersBundle\Controller\PairController;
 use FluffyDiscord\HonkersBundle\Controller\ReadSourceController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -27,4 +28,8 @@ return function (RoutingConfigurator $routes): void {
         ->controller(ReadSourceController::class)
         ->methods([Request::METHOD_GET])
         ->requirements(['name' => '[a-z0-9_]+']);
+
+    $routes->add('fluffydiscord_chatbot_pair', '/chatbot/pair')
+        ->controller(PairController::class)
+        ->methods([Request::METHOD_GET]);
 };

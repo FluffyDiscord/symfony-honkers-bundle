@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace FluffyDiscord\HonkersBundle\Tests\Unit\EventListener;
 
+use FluffyDiscord\Honkers\DTO\SiteCredentials;
 use FluffyDiscord\Honkers\Exception\TelemetryException;
 use FluffyDiscord\Honkers\Telemetry\ClickId;
 use FluffyDiscord\Honkers\Telemetry\TelemetryClient;
-use FluffyDiscord\HonkersBundle\Contract\SiteKeyContextInterface;
+use FluffyDiscord\HonkersBundle\Contract\CredentialsProviderInterface;
 use FluffyDiscord\HonkersBundle\EventListener\LinkVisitBeacon;
 use FluffyDiscord\HonkersBundle\Reporting\BackendReportGuard;
-use FluffyDiscord\HonkersBundle\Site\ConfiguredSiteKeyContext;
+use FluffyDiscord\HonkersBundle\Tests\Unit\Fixtures\FixedCredentialsProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -23,15 +24,16 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class LinkVisitBeaconTest extends TestCase
 {
-    public function testTheVisitIsReportedOnceOnTerminateWithTheSiteKeyCapturedAtRequestTime(): void
+    public function testTheVisitIsReportedOnceOnTerminateWithTheSiteCapturedAtRequestTime(): void
     {
         $requestStack = new RequestStack();
-        $siteKeyContext = $this->createRequestScopedSiteKeyContext($requestStack);
+        $site = new SiteCredentials('site-a', 'ingest-secret');
+        $credentialsProvider = $this->createRequestScopedCredentialsProvider($requestStack, $site);
         $telemetryClient = $this->createMock(TelemetryClient::class);
         $telemetryClient->expects(self::once())
             ->method('reportLinkVisit')
-            ->with('site-a', 'click-1', 'https://shop.example:8443/products/clipper');
-        $beacon = $this->createBeacon($telemetryClient, $siteKeyContext);
+            ->with(self::identicalTo($site), 'click-1', 'https://shop.example:8443/products/clipper');
+        $beacon = $this->createBeacon($telemetryClient, $credentialsProvider);
         $request = Request::create('https://shop.example:8443/products/clipper?gooseclid=click-1&utm_source=chat#reviews');
 
         $requestStack->push($request);
@@ -90,11 +92,21 @@ class LinkVisitBeaconTest extends TestCase
         $telemetryClient->expects(self::never())->method('reportLinkVisit');
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::never())->method('warning');
-        $beacon = $this->createBeacon($telemetryClient, new ConfiguredSiteKeyContext(''), $logger, '', '');
+        $beacon = $this->createBeacon($telemetryClient, new FixedCredentialsProvider(null), $logger, '');
         $request = Request::create('https://shop.example/products/clipper?gooseclid=click-1');
 
         $this->handle($beacon, $request, new Response());
         $this->handle($beacon, $request, new Response());
+    }
+
+    public function testASiteWithoutAnIngestSecretIsNotReported(): void
+    {
+        $telemetryClient = $this->createMock(TelemetryClient::class);
+        $telemetryClient->expects(self::never())->method('reportLinkVisit');
+        $credentialsProvider = new FixedCredentialsProvider(new SiteCredentials('site-a', ''));
+        $beacon = $this->createBeacon($telemetryClient, $credentialsProvider);
+
+        $this->handle($beacon, Request::create('https://shop.example/products/clipper?gooseclid=click-1'), new Response());
     }
 
     public function testAnHttpBackendIsRefusedOutsideDev(): void
@@ -137,40 +149,45 @@ class LinkVisitBeaconTest extends TestCase
 
     private function createBeacon(
         TelemetryClient $telemetryClient,
-        ?SiteKeyContextInterface $siteKeyContext = null,
+        ?CredentialsProviderInterface $credentialsProvider = null,
         ?LoggerInterface $logger = null,
         string $backendUrl = 'https://honkers.example',
-        string $ingestSecret = 'ingest-secret',
         string $environment = 'prod',
     ): LinkVisitBeacon {
         $logger ??= new NullLogger();
-        $backendReportGuard = new BackendReportGuard($logger, $backendUrl, $ingestSecret, $environment);
+        $backendReportGuard = new BackendReportGuard($logger, $backendUrl, $environment);
 
         return new LinkVisitBeacon(
             $telemetryClient,
-            $siteKeyContext ?? new ConfiguredSiteKeyContext('site-a'),
+            $credentialsProvider ?? new FixedCredentialsProvider(),
             new ClickId(),
             $backendReportGuard,
             $logger,
         );
     }
 
-    private function createRequestScopedSiteKeyContext(RequestStack $requestStack): SiteKeyContextInterface
+    private function createRequestScopedCredentialsProvider(RequestStack $requestStack, SiteCredentials $site): CredentialsProviderInterface
     {
-        return new class($requestStack) implements SiteKeyContextInterface {
+        return new class($requestStack, $site) implements CredentialsProviderInterface {
             public function __construct(
-                private readonly RequestStack $requestStack,
+                private readonly RequestStack    $requestStack,
+                private readonly SiteCredentials $site,
             ) {
             }
 
-            public function getSiteKey(): string
+            public function isApiSecretValid(#[\SensitiveParameter] string $token): bool
+            {
+                return false;
+            }
+
+            public function findCurrentSite(): ?SiteCredentials
             {
                 $request = $this->requestStack->getCurrentRequest();
                 if ($request === null) {
-                    return '';
+                    return null;
                 }
 
-                return 'site-a';
+                return $this->site;
             }
         };
     }
