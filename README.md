@@ -424,7 +424,7 @@ if ($canSend) {
 ```
 
 Max 500 ids per call. The request sends `Authorization: Bearer <site key>.<ingest secret>`. `$result->accepted` is the 202;
-`$result->isThrottled()` with `$result->retryAfterSeconds` is a 429.
+`$result->isThrottled()` is a 429 or 503: nothing was queued, send the same ids again after `$result->retryAfterSeconds`.
 
 ## Widget
 
