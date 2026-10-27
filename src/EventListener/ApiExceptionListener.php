@@ -7,6 +7,7 @@ namespace FluffyDiscord\HonkersBundle\EventListener;
 use FluffyDiscord\Honkers\DTO\Violation;
 use FluffyDiscord\Honkers\Enum\ApiErrorCode;
 use FluffyDiscord\Honkers\Exception\ChatbotApiException;
+use FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -119,7 +120,10 @@ class ApiExceptionListener
             [
                 'error' => [
                     'code' => $errorCode->value,
-                    'message' => $this->translator->trans($errorCode->getTranslationKey()),
+                    'message' => $this->translator->trans(
+                        $errorCode->getTranslationKey(),
+                        domain: FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
+                    ),
                     'violations' => $includedViolations,
                 ],
             ],

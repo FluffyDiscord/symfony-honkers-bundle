@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Chýbajúci alebo neplatný API kľúč.'
+        tool_not_found: 'Požadovaný nástroj neexistuje.'
+        source_not_found: 'Požadovaný dátový zdroj neexistuje.'
+        validation_failed: 'Požiadavka nie je platná.'
+        invalid_cursor: 'Stránkovací kurzor je neplatný.'
+        invalid_locale: 'Požadovaný jazyk nie je podporovaný.'
+        bad_request: 'Požiadavku nie je možné spracovať.'
+        not_found: 'Požadovaný zdroj neexistuje.'
+        method_not_allowed: 'HTTP metóda nie je pre tento endpoint povolená.'
+        internal_error: 'Nastala neočakávaná chyba.'
+    tool:
+        failure: 'Požadované informácie sa teraz nepodarilo získať. Skúste to prosím neskôr.'
+    pairing:
+        title: 'Pripojenie chatbota'
+        environment_credentials: 'Tento obchod má prístupové údaje chatbota v premenných prostredia. Vložte ich do konfigurácie obchodu ručne.'
+        error:
+            invalid_code: 'Odkaz na pripojenie je poškodený. Vráťte sa do administrácie chatbota a kliknite znova na Pripojiť.'
+            backend_url_refused: 'Adresa backendu chatbota v obchode chýba alebo nepoužíva https. Opravte backend_url v konfigurácii obchodu.'
+            pairing_hostname_missing: 'Obchod nemá pre túto doménu nastavený hostname. Nastavte hostname kanála a kliknite znova na Pripojiť.'
+            pairing_wrong_shop: 'Toto pripojenie patrí inému obchodu. Nič sa neuložilo. Kliknite na Pripojiť pri správnom webe.'
+            pairing_unsupported: 'Tento obchod nevie prístupové údaje uložiť. Vložte ich do konfigurácie obchodu ručne.'
+            pairing_not_found: 'Odkaz na pripojenie vypršal alebo už bol použitý. Kliknite znova na Pripojiť v administrácii chatbota.'
+            rate_limited: 'Príliš veľa pokusov. Počkajte pár minút a kliknite znova na Pripojiť.'
+            validation_failed: 'Backend chatbota požiadavku na pripojenie odmietol. Kliknite znova na Pripojiť.'
+            invalid_request: 'Backend chatbota požiadavku na pripojenie odmietol. Kliknite znova na Pripojiť.'
+            transport_failed: 'Backend chatbota nie je dostupný. Skúste to o chvíľu znova.'
+            invalid_response: 'Backend chatbota vrátil neočakávanú odpoveď. Skúste to o chvíľu znova.'
+            unknown: 'Pripojenie sa nepodarilo. Kliknite znova na Pripojiť v administrácii chatbota.'

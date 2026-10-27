@@ -14,6 +14,7 @@ Upgrading from 1.x: see [UPGRADE-2.0.md](UPGRADE-2.0.md).
 - [Push catalog changes](#push-catalog-changes) — the chatbot re-indexes just the entries you changed
 - [Chat click tracking](#chat-click-tracking) — chat link visits reported with no code
 - [Widget](#widget) — chat embed markup from your config
+- [Translations](#translations) — 10 languages built in; override or add your own
 
 ## Endpoints
 
@@ -296,12 +297,32 @@ What a bad locale costs differs per endpoint, because each has somewhere differe
 | Endpoint | Not an ICU locale | Valid but unserved |
 |---|---|---|
 | `GET /sources/{name}?locale=` | 400 `invalid_locale` | 400 `invalid_locale` |
-| `POST /tools/{name}` (`context.locale`) | 422 `validation_failed`, a `context.locale` violation | falls back to the current locale |
-| `GET /tools` (`Accept-Language`) | 400 `bad_request` | falls back to the current locale |
+| `POST /tools/{name}` (`context.locale`) | 422 `validation_failed`, a `context.locale` violation | falls back to the channel's default locale |
+| `GET /tools` (`Accept-Language`) | 400 `bad_request` | falls back to the channel's default locale |
 
-Which locales are served, and what "current locale" means, comes from `ChatbotLocaleContextInterface`.
+Which locales are served, and what "default locale" means, comes from `ChatbotLocaleContextInterface`.
 The default returns the kernel locale only; override that service to serve more (the Sylius plugin
 makes it channel-aware).
+
+## Translations
+
+**The bundle's strings ship in cs, en, de, sk, pl, hu, ro, sl, hr and ru**, in the `honkers` domain.
+Override a string or add a language in your app:
+
+`translations/honkers.it.yaml`
+
+```yaml
+fluffydiscord_honkers:
+    tool:
+        failure: 'Al momento non è possibile recuperare le informazioni. Riprova più tardi.'
+```
+
+**A string missing in the visitor's language comes from the channel's default locale**
+(`ChatbotLocaleContextInterface::getDefaultLocale()`), not your app's global fallback.
+Your own tools' descriptions and labels work the same way, in `messages` unless you set
+`translationDomain` on the definition.
+
+> API error messages and the pairing page use the request locale.
 
 ## Add a tool
 
@@ -339,7 +360,8 @@ readonly class MyTool implements ChatbotToolInterface
 
 The interface is autoconfigured. The input schema is generated from the DTO: `Assert\NotBlank` →
 required, `Assert\Email` → e-mail format, `Assert\Choice` → enum, `Assert\Length` → maxLength,
-nullable → optional. Descriptions and labels are translation keys resolved with the request locale.
+nullable → optional. Descriptions and labels are translation keys in `messages`, or in the
+`translationDomain` you pass to `ToolDefinition` — see [Translations](#translations).
 
 **`getDefinition()` must not read constructor arguments** — it runs at container compile time to index
 tools by name, and duplicate names fail the build.

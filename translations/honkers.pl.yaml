@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Brak klucza API lub klucz jest nieprawidłowy.'
+        tool_not_found: 'Żądane narzędzie nie istnieje.'
+        source_not_found: 'Żądane źródło danych nie istnieje.'
+        validation_failed: 'Żądanie jest nieprawidłowe.'
+        invalid_cursor: 'Kursor paginacji jest nieprawidłowy.'
+        invalid_locale: 'Żądany język nie jest obsługiwany.'
+        bad_request: 'Nie można przetworzyć żądania.'
+        not_found: 'Żądany zasób nie istnieje.'
+        method_not_allowed: 'Metoda HTTP nie jest dozwolona dla tego endpointu.'
+        internal_error: 'Wystąpił nieoczekiwany błąd.'
+    tool:
+        failure: 'Nie udało się teraz pobrać żądanych informacji. Spróbuj ponownie później.'
+    pairing:
+        title: 'Podłączanie chatbota'
+        environment_credentials: 'Ten sklep przechowuje dane dostępowe chatbota w zmiennych środowiskowych. Wklej je ręcznie do konfiguracji sklepu.'
+        error:
+            invalid_code: 'Link do połączenia jest uszkodzony. Wróć do panelu chatbota i ponownie kliknij Połącz.'
+            backend_url_refused: 'W sklepie brakuje adresu backendu chatbota lub adres nie używa https. Popraw backend_url w konfiguracji sklepu.'
+            pairing_hostname_missing: 'Sklep nie ma ustawionej nazwy hosta dla tej domeny. Ustaw nazwę hosta kanału i ponownie kliknij Połącz.'
+            pairing_wrong_shop: 'To połączenie należy do innego sklepu. Nic nie zostało zapisane. Kliknij Połącz przy właściwej stronie.'
+            pairing_unsupported: 'Ten sklep nie może zapisać danych dostępowych. Wklej je ręcznie do konfiguracji sklepu.'
+            pairing_not_found: 'Link do połączenia wygasł lub został już użyty. Ponownie kliknij Połącz w panelu chatbota.'
+            rate_limited: 'Zbyt wiele prób. Odczekaj kilka minut i ponownie kliknij Połącz.'
+            validation_failed: 'Backend chatbota odrzucił żądanie połączenia. Ponownie kliknij Połącz.'
+            invalid_request: 'Backend chatbota odrzucił żądanie połączenia. Ponownie kliknij Połącz.'
+            transport_failed: 'Backend chatbota jest niedostępny. Spróbuj ponownie za chwilę.'
+            invalid_response: 'Backend chatbota zwrócił nieoczekiwaną odpowiedź. Spróbuj ponownie za chwilę.'
+            unknown: 'Nie udało się połączyć. Ponownie kliknij Połącz w panelu chatbota.'

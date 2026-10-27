@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.0.1
+
+### Added
+
+- Translations in de, sk, pl, hu, ro, sl, hr and ru.
+- `FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN` (`honkers`).
+- `ChannelFallbackTranslator` — a string missing in the visitor's language comes from the channel's default locale.
+  Tool and source definitions, and the tool-failure message, are translated through it.
+
+### Changed
+
+- **The bundle's strings moved from `messages` to `honkers`.** Overriding them in `translations/messages.*`? Rename
+  the files to `translations/honkers.<locale>.yaml`; the keys stay the same.
+- A tool call or tool list in a locale no channel serves uses the channel's default locale, not the current
+  locale.
+- Requires `fluffydiscord/honkers-sdk` ^2.0.3. Your own `ChatbotLocaleContextInterface` implementation must add
+  `getDefaultLocale()`.
+
 ## v2.0.0
 
 See [UPGRADE-2.0.md](UPGRADE-2.0.md).

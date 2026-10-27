@@ -9,6 +9,7 @@ use FluffyDiscord\Honkers\Pairing\HostMatcher;
 use FluffyDiscord\Honkers\Pairing\PairingClient;
 use FluffyDiscord\Honkers\Pairing\PairingResult;
 use FluffyDiscord\HonkersBundle\Contract\CredentialsWriterInterface;
+use FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle;
 use FluffyDiscord\HonkersBundle\Pairing\PairedCredentials;
 use FluffyDiscord\HonkersBundle\Pairing\PairingErrorCode;
 use FluffyDiscord\HonkersBundle\Reporting\BackendReportGuard;
@@ -40,7 +41,10 @@ class PairController extends AbstractController
     public function __invoke(Request $request, #[MapQueryParameter] string $code = ''): Response
     {
         if ($this->credentialsWriter === null) {
-            $message = $this->translator->trans('fluffydiscord_honkers.pairing.environment_credentials');
+            $message = $this->translator->trans(
+                'fluffydiscord_honkers.pairing.environment_credentials',
+                domain: FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
+            );
 
             return $this->renderPage($request, $message, null, Response::HTTP_CONFLICT);
         }
@@ -138,14 +142,20 @@ class PairController extends AbstractController
     private function renderError(Request $request, string $errorCode): Response
     {
         $knownErrorCode = PairingErrorCode::tryFrom($errorCode) ?? PairingErrorCode::Unknown;
-        $message = $this->translator->trans('fluffydiscord_honkers.pairing.error.' . $knownErrorCode->value);
+        $message = $this->translator->trans(
+            'fluffydiscord_honkers.pairing.error.' . $knownErrorCode->value,
+            domain: FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
+        );
 
         return $this->renderPage($request, $message, $errorCode, Response::HTTP_BAD_REQUEST);
     }
 
     private function renderPage(Request $request, string $message, ?string $errorCode, int $statusCode): Response
     {
-        $title = $this->translator->trans('fluffydiscord_honkers.pairing.title');
+        $title = $this->translator->trans(
+            'fluffydiscord_honkers.pairing.title',
+            domain: FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
+        );
         $errorCodeLine = $errorCode === null ? '' : '<p><code>' . $this->escape($errorCode) . '</code></p>';
 
         $html = sprintf(

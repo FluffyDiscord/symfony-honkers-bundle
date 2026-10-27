@@ -9,18 +9,22 @@ use FluffyDiscord\Honkers\DTO\ToolListHeaders;
 use FluffyDiscord\Honkers\Locale\LocaleMatcher;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
 use FluffyDiscord\Honkers\Schema\ArgumentsSchemaGenerator;
+use FluffyDiscord\HonkersBundle\Translation\ChannelFallbackTranslator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ListToolsController extends AbstractController
 {
     public function __construct(
-        private readonly ToolRegistry $toolRegistry,
-        private readonly ArgumentsSchemaGenerator $schemaGenerator,
-        private readonly TranslatorInterface $translator,
+        private readonly ToolRegistry                  $toolRegistry,
+        private readonly ArgumentsSchemaGenerator      $schemaGenerator,
+
+        #[Autowire(service: ChannelFallbackTranslator::class)]
+        private readonly TranslatorInterface           $translator,
         private readonly ChatbotLocaleContextInterface $localeContext,
-        private readonly LocaleMatcher $localeMatcher,
+        private readonly LocaleMatcher                 $localeMatcher,
     ) {
     }
 
@@ -46,15 +50,15 @@ class ListToolsController extends AbstractController
      */
     private function resolveLocale(?string $requested): string
     {
-        $contextLocale = $this->localeContext->getCurrentLocale();
+        $defaultLocale = $this->localeContext->getDefaultLocale();
 
         if ($requested === null) {
-            return $contextLocale;
+            return $defaultLocale;
         }
 
         $servedLocales = $this->localeContext->getAllChannelLocales();
         $servedLocale = $this->localeMatcher->resolveServedLocale($requested, $servedLocales);
 
-        return $servedLocale ?? $contextLocale;
+        return $servedLocale ?? $defaultLocale;
     }
 }

@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Hiányzó vagy érvénytelen API-kulcs.'
+        tool_not_found: 'A kért eszköz nem létezik.'
+        source_not_found: 'A kért adatforrás nem létezik.'
+        validation_failed: 'A kérés érvénytelen.'
+        invalid_cursor: 'A lapozási kurzor érvénytelen.'
+        invalid_locale: 'A kért nyelv nem támogatott.'
+        bad_request: 'A kérést nem sikerült feldolgozni.'
+        not_found: 'A kért erőforrás nem létezik.'
+        method_not_allowed: 'Ez a HTTP-metódus nem engedélyezett ehhez a végponthoz.'
+        internal_error: 'Váratlan hiba történt.'
+    tool:
+        failure: 'A kért információt most nem sikerült lekérni. Kérjük, próbálja újra később.'
+    pairing:
+        title: 'A chatbot csatlakoztatása'
+        environment_credentials: 'Ez a webshop környezeti változókban tárolja a chatbot hozzáférési adatait. Másolja be őket kézzel a webshop konfigurációjába.'
+        error:
+            invalid_code: 'A csatlakozási link hibás. Térjen vissza a chatbot adminfelületére, és kattintson újra a Csatlakoztatás gombra.'
+            backend_url_refused: 'A webshopban hiányzik a chatbot backend címe, vagy nem https-t használ. Javítsa a backend_url értékét a webshop konfigurációjában.'
+            pairing_hostname_missing: 'A webshopban nincs hostname beállítva ehhez a domainhez. Állítsa be a csatorna hostname-jét, és kattintson újra a Csatlakoztatás gombra.'
+            pairing_wrong_shop: 'Ez a kapcsolat egy másik webshophoz tartozik. Semmi sem lett mentve. Kattintson a Csatlakoztatás gombra a megfelelő weboldalnál.'
+            pairing_unsupported: 'Ez a webshop nem tudja tárolni a hozzáférési adatokat. Másolja be őket kézzel a webshop konfigurációjába.'
+            pairing_not_found: 'A csatlakozási link lejárt, vagy már felhasználták. Kattintson újra a Csatlakoztatás gombra a chatbot adminfelületén.'
+            rate_limited: 'Túl sok próbálkozás. Várjon néhány percet, majd kattintson újra a Csatlakoztatás gombra.'
+            validation_failed: 'A chatbot backendje elutasította a csatlakozási kérést. Kattintson újra a Csatlakoztatás gombra.'
+            invalid_request: 'A chatbot backendje elutasította a csatlakozási kérést. Kattintson újra a Csatlakoztatás gombra.'
+            transport_failed: 'A chatbot backendje nem érhető el. Próbálja újra egy kis idő múlva.'
+            invalid_response: 'A chatbot backendje váratlan választ küldött. Próbálja újra egy kis idő múlva.'
+            unknown: 'A csatlakoztatás nem sikerült. Kattintson újra a Csatlakoztatás gombra a chatbot adminfelületén.'

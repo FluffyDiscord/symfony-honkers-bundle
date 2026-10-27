@@ -27,7 +27,7 @@ class ListToolsControllerTest extends TestCase
         self::assertSame('de_AT', $recorded);
     }
 
-    public function testALocaleNoChannelServesFallsBackToTheContextLocale(): void
+    public function testALocaleNoChannelServesFallsBackToTheChannelDefaultLocale(): void
     {
         $translator = $this->createTranslatorRecordingTheLocale($recorded);
 
@@ -54,7 +54,8 @@ class ListToolsControllerTest extends TestCase
     private function listTools(TranslatorInterface $translator, string $requestedLocale): void
     {
         $localeContext = $this->createStub(ChatbotLocaleContextInterface::class);
-        $localeContext->method('getCurrentLocale')->willReturn('cs_CZ');
+        $localeContext->method('getCurrentLocale')->willReturn('de_AT');
+        $localeContext->method('getDefaultLocale')->willReturn('cs_CZ');
         $localeContext->method('getChannelLocales')->willReturn(['cs_CZ']);
         $localeContext->method('getAllChannelLocales')->willReturn(['cs_CZ', 'de_AT']);
 

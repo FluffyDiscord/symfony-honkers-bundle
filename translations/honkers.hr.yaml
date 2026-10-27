@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'API ključ nedostaje ili nije valjan.'
+        tool_not_found: 'Traženi alat ne postoji.'
+        source_not_found: 'Traženi izvor podataka ne postoji.'
+        validation_failed: 'Zahtjev nije valjan.'
+        invalid_cursor: 'Kursor za straničenje nije valjan.'
+        invalid_locale: 'Traženi jezik nije podržan.'
+        bad_request: 'Zahtjev nije moguće obraditi.'
+        not_found: 'Traženi resurs ne postoji.'
+        method_not_allowed: 'HTTP metoda nije dopuštena za ovu krajnju točku.'
+        internal_error: 'Došlo je do neočekivane pogreške.'
+    tool:
+        failure: 'Tražene informacije trenutno nije moguće dohvatiti. Pokušajte ponovno kasnije.'
+    pairing:
+        title: 'Povezivanje chatbota'
+        environment_credentials: 'Ova trgovina čuva pristupne podatke chatbota u varijablama okruženja. Ručno ih zalijepite u konfiguraciju trgovine.'
+        error:
+            invalid_code: 'Poveznica za povezivanje je oštećena. Vratite se u administraciju chatbota i ponovno kliknite Poveži.'
+            backend_url_refused: 'Adresa backenda chatbota u trgovini nedostaje ili ne koristi https. Ispravite backend_url u konfiguraciji trgovine.'
+            pairing_hostname_missing: 'Trgovina nema postavljen hostname za ovu domenu. Postavite hostname kanala i ponovno kliknite Poveži.'
+            pairing_wrong_shop: 'Ova veza pripada drugoj trgovini. Ništa nije spremljeno. Kliknite Poveži kod ispravne web-stranice.'
+            pairing_unsupported: 'Ova trgovina ne može spremiti pristupne podatke. Ručno ih zalijepite u konfiguraciju trgovine.'
+            pairing_not_found: 'Poveznica za povezivanje je istekla ili je već iskorištena. Ponovno kliknite Poveži u administraciji chatbota.'
+            rate_limited: 'Previše pokušaja. Pričekajte nekoliko minuta i ponovno kliknite Poveži.'
+            validation_failed: 'Backend chatbota odbio je zahtjev za povezivanje. Ponovno kliknite Poveži.'
+            invalid_request: 'Backend chatbota odbio je zahtjev za povezivanje. Ponovno kliknite Poveži.'
+            transport_failed: 'Backend chatbota nije dostupan. Pokušajte ponovno za trenutak.'
+            invalid_response: 'Backend chatbota vratio je neočekivani odgovor. Pokušajte ponovno za trenutak.'
+            unknown: 'Povezivanje nije uspjelo. Ponovno kliknite Poveži u administraciji chatbota.'

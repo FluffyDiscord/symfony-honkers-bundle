@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FluffyDiscord\HonkersBundle\Security;
 
 use FluffyDiscord\Honkers\Enum\ApiErrorCode;
+use FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,10 @@ class ApiAuthenticationFailureHandler implements AuthenticationFailureHandlerInt
             [
                 'error' => [
                     'code' => $errorCode->value,
-                    'message' => $this->translator->trans($errorCode->getTranslationKey()),
+                    'message' => $this->translator->trans(
+                        $errorCode->getTranslationKey(),
+                        domain: FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
+                    ),
                     'violations' => [],
                 ],
             ],

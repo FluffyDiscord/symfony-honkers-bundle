@@ -27,6 +27,11 @@ class DefaultLocaleContext implements ChatbotLocaleContextInterface
         return $this->defaultLocale;
     }
 
+    public function getDefaultLocale(): string
+    {
+        return $this->defaultLocale;
+    }
+
     /**
      * @return list<string>
      */

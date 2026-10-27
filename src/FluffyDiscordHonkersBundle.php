@@ -15,6 +15,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class FluffyDiscordHonkersBundle extends AbstractBundle
 {
+    public const TRANSLATION_DOMAIN = 'honkers';
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

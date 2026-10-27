@@ -13,8 +13,11 @@ use FluffyDiscord\Honkers\DTO\Violation;
 use FluffyDiscord\Honkers\Exception\ArgumentsValidationException;
 use FluffyDiscord\Honkers\Exception\ToolNotFoundException;
 use FluffyDiscord\Honkers\Registry\ToolRegistry;
+use FluffyDiscord\HonkersBundle\FluffyDiscordHonkersBundle;
+use FluffyDiscord\HonkersBundle\Translation\ChannelFallbackTranslator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
@@ -31,6 +34,8 @@ class CallToolController extends AbstractController
         private readonly ToolRegistry                  $toolRegistry,
         private readonly DenormalizerInterface         $denormalizer,
         private readonly ValidatorInterface            $validator,
+
+        #[Autowire(service: ChannelFallbackTranslator::class)]
         private readonly TranslatorInterface           $translator,
         private readonly ChatbotLocaleContextInterface $localeContext,
         private readonly ?LoggerInterface              $logger = null,
@@ -68,7 +73,7 @@ class CallToolController extends AbstractController
                 [new ContentItem($this->translator->trans(
                     'fluffydiscord_honkers.tool.failure',
                     [],
-                    'messages',
+                    FluffyDiscordHonkersBundle::TRANSLATION_DOMAIN,
                     $context->locale,
                 ))],
                 [],
@@ -83,7 +88,7 @@ class CallToolController extends AbstractController
     {
         $servedLocale = $this->localeContext->resolveForChannel($context->locale);
 
-        return $context->withLocale($servedLocale ?? $this->localeContext->getCurrentLocale());
+        return $context->withLocale($servedLocale ?? $this->localeContext->getDefaultLocale());
     }
 
     private function denormalizeArguments(array $arguments, string $argumentsClass): object

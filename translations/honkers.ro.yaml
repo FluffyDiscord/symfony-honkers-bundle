@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Cheia API lipsește sau este invalidă.'
+        tool_not_found: 'Instrumentul solicitat nu există.'
+        source_not_found: 'Sursa de date solicitată nu există.'
+        validation_failed: 'Cererea este invalidă.'
+        invalid_cursor: 'Cursorul de paginare este invalid.'
+        invalid_locale: 'Limba solicitată nu este suportată.'
+        bad_request: 'Cererea nu a putut fi procesată.'
+        not_found: 'Resursa solicitată nu există.'
+        method_not_allowed: 'Metoda HTTP nu este permisă pentru acest endpoint.'
+        internal_error: 'A apărut o eroare neașteptată.'
+    tool:
+        failure: 'Informațiile solicitate nu au putut fi obținute acum. Vă rugăm să încercați din nou mai târziu.'
+    pairing:
+        title: 'Conectarea chatbotului'
+        environment_credentials: 'Acest magazin păstrează datele de acces ale chatbotului în variabile de mediu. Introduceți-le manual în configurația magazinului.'
+        error:
+            invalid_code: 'Linkul de conectare este deteriorat. Reveniți în panoul chatbotului și faceți clic din nou pe Conectează.'
+            backend_url_refused: 'Adresa backendului chatbotului lipsește din magazin sau nu folosește https. Corectați backend_url în configurația magazinului.'
+            pairing_hostname_missing: 'Magazinul nu are setat un hostname pentru acest domeniu. Setați hostname-ul canalului și faceți clic din nou pe Conectează.'
+            pairing_wrong_shop: 'Această conexiune aparține altui magazin. Nu s-a salvat nimic. Faceți clic pe Conectează la site-ul corect.'
+            pairing_unsupported: 'Acest magazin nu poate salva datele de acces. Introduceți-le manual în configurația magazinului.'
+            pairing_not_found: 'Linkul de conectare a expirat sau a fost deja folosit. Faceți clic din nou pe Conectează în panoul chatbotului.'
+            rate_limited: 'Prea multe încercări. Așteptați câteva minute și faceți clic din nou pe Conectează.'
+            validation_failed: 'Backendul chatbotului a refuzat cererea de conectare. Faceți clic din nou pe Conectează.'
+            invalid_request: 'Backendul chatbotului a refuzat cererea de conectare. Faceți clic din nou pe Conectează.'
+            transport_failed: 'Backendul chatbotului nu poate fi accesat. Încercați din nou în câteva momente.'
+            invalid_response: 'Backendul chatbotului a trimis un răspuns neașteptat. Încercați din nou în câteva momente.'
+            unknown: 'Conectarea a eșuat. Faceți clic din nou pe Conectează în panoul chatbotului.'

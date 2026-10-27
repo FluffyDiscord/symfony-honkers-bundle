@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Manjkajoč ali neveljaven ključ API.'
+        tool_not_found: 'Zahtevano orodje ne obstaja.'
+        source_not_found: 'Zahtevani vir podatkov ne obstaja.'
+        validation_failed: 'Zahteva ni veljavna.'
+        invalid_cursor: 'Kazalec za ostranjevanje ni veljaven.'
+        invalid_locale: 'Zahtevani jezik ni podprt.'
+        bad_request: 'Zahteve ni bilo mogoče obdelati.'
+        not_found: 'Zahtevani vir ne obstaja.'
+        method_not_allowed: 'Metoda HTTP za to končno točko ni dovoljena.'
+        internal_error: 'Prišlo je do nepričakovane napake.'
+    tool:
+        failure: 'Zahtevanih informacij trenutno ni bilo mogoče pridobiti. Poskusite znova pozneje.'
+    pairing:
+        title: 'Povezovanje chatbota'
+        environment_credentials: 'Ta trgovina hrani dostopne podatke chatbota v okoljskih spremenljivkah. Ročno jih prilepite v konfiguracijo trgovine.'
+        error:
+            invalid_code: 'Povezava za priključitev je poškodovana. Vrnite se na nadzorno ploščo chatbota in znova kliknite Poveži.'
+            backend_url_refused: 'Naslov zaledja chatbota v trgovini manjka ali ne uporablja https. Popravite backend_url v konfiguraciji trgovine.'
+            pairing_hostname_missing: 'Trgovina za to domeno nima nastavljenega imena gostitelja. Nastavite ime gostitelja kanala in znova kliknite Poveži.'
+            pairing_wrong_shop: 'Ta povezava pripada drugi trgovini. Nič ni bilo shranjeno. Kliknite Poveži pri pravi spletni strani.'
+            pairing_unsupported: 'Ta trgovina ne more shraniti dostopnih podatkov. Ročno jih prilepite v konfiguracijo trgovine.'
+            pairing_not_found: 'Povezava za priključitev je potekla ali je bila že uporabljena. Znova kliknite Poveži na nadzorni plošči chatbota.'
+            rate_limited: 'Preveč poskusov. Počakajte nekaj minut in znova kliknite Poveži.'
+            validation_failed: 'Zaledje chatbota je zavrnilo zahtevo za povezavo. Znova kliknite Poveži.'
+            invalid_request: 'Zaledje chatbota je zavrnilo zahtevo za povezavo. Znova kliknite Poveži.'
+            transport_failed: 'Zaledje chatbota ni dosegljivo. Poskusite znova čez trenutek.'
+            invalid_response: 'Zaledje chatbota je vrnilo nepričakovan odgovor. Poskusite znova čez trenutek.'
+            unknown: 'Povezovanje ni uspelo. Znova kliknite Poveži na nadzorni plošči chatbota.'

@@ -1,0 +1,30 @@
+fluffydiscord_honkers:
+    error:
+        unauthorized: 'Fehlender oder ungültiger API-Schlüssel.'
+        tool_not_found: 'Das angeforderte Tool existiert nicht.'
+        source_not_found: 'Die angeforderte Datenquelle existiert nicht.'
+        validation_failed: 'Die Anfrage ist ungültig.'
+        invalid_cursor: 'Der Paginierungs-Cursor ist ungültig.'
+        invalid_locale: 'Die angeforderte Sprache wird nicht unterstützt.'
+        bad_request: 'Die Anfrage konnte nicht verarbeitet werden.'
+        not_found: 'Die angeforderte Ressource existiert nicht.'
+        method_not_allowed: 'Die HTTP-Methode ist für diesen Endpunkt nicht erlaubt.'
+        internal_error: 'Ein unerwarteter Fehler ist aufgetreten.'
+    tool:
+        failure: 'Die angeforderten Informationen konnten gerade nicht abgerufen werden. Bitte versuchen Sie es später erneut.'
+    pairing:
+        title: 'Chatbot verbinden'
+        environment_credentials: 'Dieser Shop speichert die Zugangsdaten des Chatbots in Umgebungsvariablen. Tragen Sie sie manuell in die Shop-Konfiguration ein.'
+        error:
+            invalid_code: 'Der Verbindungslink ist fehlerhaft. Gehen Sie zurück zum Chatbot-Dashboard und klicken Sie erneut auf Verbinden.'
+            backend_url_refused: 'Die Chatbot-Backend-URL des Shops fehlt oder verwendet kein https. Korrigieren Sie backend_url in der Shop-Konfiguration.'
+            pairing_hostname_missing: 'Für diese Domain ist im Shop kein Hostname eingestellt. Legen Sie den Hostname des Kanals fest und klicken Sie erneut auf Verbinden.'
+            pairing_wrong_shop: 'Diese Verbindung gehört zu einem anderen Shop. Es wurde nichts gespeichert. Klicken Sie bei der richtigen Website erneut auf Verbinden.'
+            pairing_unsupported: 'Dieser Shop kann die Zugangsdaten nicht speichern. Tragen Sie sie manuell in die Shop-Konfiguration ein.'
+            pairing_not_found: 'Der Verbindungslink ist abgelaufen oder wurde bereits verwendet. Klicken Sie im Chatbot-Dashboard erneut auf Verbinden.'
+            rate_limited: 'Zu viele Versuche. Warten Sie ein paar Minuten und klicken Sie erneut auf Verbinden.'
+            validation_failed: 'Das Chatbot-Backend hat die Verbindungsanfrage abgelehnt. Klicken Sie erneut auf Verbinden.'
+            invalid_request: 'Das Chatbot-Backend hat die Verbindungsanfrage abgelehnt. Klicken Sie erneut auf Verbinden.'
+            transport_failed: 'Das Chatbot-Backend ist nicht erreichbar. Versuchen Sie es gleich noch einmal.'
+            invalid_response: 'Das Chatbot-Backend hat eine unerwartete Antwort gesendet. Versuchen Sie es gleich noch einmal.'
+            unknown: 'Die Verbindung ist fehlgeschlagen. Klicken Sie im Chatbot-Dashboard erneut auf Verbinden.'
